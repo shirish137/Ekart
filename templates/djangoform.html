@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block 'main' %}
+<div class="container">
+     <div class="row">
+          <div class="col-md-6">
+           <form method="POST" action="">
+            {% csrf_token %}
+                <table>
+                    {{form}}
+                    <tr>
+                        <td><input type="submit" value="Create"></td>
+                    </tr>
+
+                </table>
+           </form>
+           
+               
+          </div>
+     </div>
+</div>
+{% endblock 'main' %}

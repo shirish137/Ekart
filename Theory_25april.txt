@@ -1,0 +1,420 @@
+Superuser
+=========
+step1: Create superuser 
+      python manage.py createsuperuser
+
+      1) Username:
+      2) email   :
+      3) Password:
+      4) Confirm 
+         Password:
+
+step2: Access admin dashboard 
+
+       http://127.0.0.1:8000/admin
+
+       
+
+ CRUD operation on auth_user model=> Completed
+
+ Register model in Django Admin 
+ ==============================
+
+ step1: Open admin.py file in application folder.
+ step2: import model in admin.py file that need to be register.
+ step3: Register model 
+        admin.site.register(modelname)
+        e.g
+        admin.site.register(Products)
+
+
+Reflecting product name in the product view section
+===================================================
+In model.py file, in model class add following method.
+
+def __str__(self):
+
+        return self.datamembername
+
+category
+========
+1-Mobile
+2-Cloths
+3-Shoes
+
+Task:
+Display all data from model product on Admin dashboard
+Create filters for category columns [CAT and Status]
+
+ModelAdmin class
+================
+
+Register modeladminclass
+
+admin.site.register(modelname,modeladminclassname)
+
+Need of ModelAdminclass
+=======================
+1) To dislpay all column data on admin dashboard.
+2) To display filters for categorial data columns.
+
+
+Task2:
+Change column names shown on admin dashboard.
+or alternate name to column names displayed.
+
+step1: open models.py
+step2: In model fields add following parameter 
+       verbose_name=value
+       value given to above parameter is alternate name
+       to the column displayed anywhere.
+
+       name=models.CharFields(max_length=50,verbose_name="Product Name")
+
+Task: allocating meaningfull name to the cat column data.
+      data in the cat column contains 1 2 and 3 i.e 
+      1 for Mobile, 2 for Cloths and 3 for shoes.
+
+      req: Instead of 1,2 and 3 it should display Mobile,Cloths and
+           shoes.
+
+    In models.py , in dataype methods use parameter 
+    choices=tuple of choices
+
+Task:
+====
+Display all products on home page.
+
+step1:fetch all data from ecommapp_product 
+      data=select * from ecommapp_product;
+      ORM query to fetch all data 
+      ---------------------------
+      data=Product.objects.all()
+
+step2: store fetch data in dictionary.
+      content={}
+      content['products']=data
+step3: send that dictionary to index.html 
+      
+      return render(request,'index.html',content)
+
+                products
+      id  name cat price status
+x->   1
+      2
+      3
+      4
+      5
+      6
+      7
+
+Filter on basis of active product on home page
+=============================================
+step1: 
+      sql query: select * from ecommapp_product where status=1;
+      ORM Query: Product.objects.filter(status=1)
+
+
+Task: sidebar for filter and sorting
+
+-------------------------------------------------------
+                  Nav bar row=>col-md-12
+-------------------------------------------------------
+Sidebar        |       Product Area   [col-md-9]
+col-md-3       |   
+               |
+               |
+               |
+
+                   
+<div class="row">
+       <div class="col-md-12">
+           navigation bar
+       </div>
+</div>
+
+<div class="row">
+           <div class="col-md-3">
+               sidebar
+           </div>
+
+           <div class="col-md-9">
+                  product listing
+           </div>
+</div>
+
+
+Sorting
+======
+sql query: select * from ecommapp_product order by price;
+ORM
+===
+qset=Modename.objects.order_by('colname')
+in descending order
+==================
+qset=Modename.objects.order_by('-colname')
+
+sorting and fiter
+================
+select * from ecommapp_products order by price where status=1;
+
+
+Filter sql query for mobile
+
+select * from ecommapp_product where cat=1 and status=1;
+ORM
+Product.objects.filter(cat=1 and status=1)
+If there is need to handel more than one condition in filter function then
+create Q object and user logical operators.
+and => &
+or => |
+
+
+Task:
+===
+Filter by price 
+
+<  Rs. 5000
+
+SQL query:
+select * from ecommapp_product where price < 5000;
+ORM
+Product.objects.filter(price__lt=5000)
+Product.objects.filter(price__lte=5000)                  
+>= Rs. 5000
+Product.objects.filter(price__gte=5000)
+
+Uploading image from admin panel
+================================
+step1:create image field in the database table which is used to store
+      url or path of that image.
+
+      e.g  pimage=models.ImageField(upload_to="folder")
+      upload_to parameter contains folder name in which image will be stored.
+
+      truncate table ecommapp_product;
+step2: install pillow module require for image uploading in django
+       pip install pillow
+
+step3:create folder named as media in project root folder.
+      ecommerce
+        -ecommerce
+        -ecommapp 
+        -static
+        -templates
+        -media
+step4: settings in settings.py file for 
+       media folder.
+
+       MEDIA_URL='/media/'
+       MEDIA_ROOT=os.path.join(BASE_DIR,'media/')
+
+step5: edit urls.py from project folder.
+       from django.conf import settings
+       from django.conf.urls.static import static
+
+       from ecommapp import views
+      urlpatterns = [
+      path("admin/", admin.site.urls),
+      path('',include('ecommapp.urls')),   
+      ]
+
+     if settings.DEBUG:
+        urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+    
+
+
+
+Forms
+=====
+1) Normal forms 
+2) Django forms 
+      -Django forms 
+      -Model forms ==> Login and registration
+
+Task
+====
+1)create UI for 
+  - Product addition form 
+  =-insert product into database table
+  -View all products 
+  -edit a particular product 
+  -delete a particular product.
+
+
+  http://localhost:8000/addproduct?csrfmiddlewaretoken=woK2xf4B22Iku4hiPIn1NhuhCkFjgpiVAEbOKgEGYMis3jWFqTxYOwAZ9BKQq15a&pname=Samsung+Mobile&pcat=1&pprice=12000&status=1
+
+  Fetch data from the request POST 
+  There is inbuilt dictionary with POST which store forms data in key and value.
+
+
+  Insert record into product table 
+  ================================
+  insert into ecommapp_product(name,cat,price,status)values()
+
+  step1: create object of model class 
+
+        obj=Modelname.objects.create(colname1=value1,colname2=value2,....,coln=valuen)
+  step2: save that object.
+        obj.save()      
+
+
+Delete record from database
+==========================
+SQL query: delete from ecommapp_products where id=rid
+
+ORM
+===
+p=Product.objects.filter(id=rid) # where id=rid 
+p.delete()#delete from ecommapp_products
+
+Edit 
+===
+1) Show form filled with old data.
+2) Update 
+
+  update tablename set colname1=value1,colname2=value2,...,colnamen=valuen where id=rid
+
+  ORM 
+  ===
+  p=Product.objects.filter(id=rid) # where id=rid 
+  p.update(colname=val1,colname2=value2,...,colnamen=valuen)
+
+
+  Forms in Django 
+  ==============
+  1) Django Form 
+  2) Model form
+
+  Forms in django produce HTML code required for form automatically.
+
+1)Django Form
+step1: create forms.py file in the application folder.
+step2: import forms module from django 
+step3: Define form clas inherited from forms.Form 
+
+      class FormClassName(forms.Form):
+
+           data members 
+
+
+   Data members in FormClass = Fields in the form
+
+
+Authentication 
+===============
+1) Registration 
+2) Login 
+
+Registration 
+=============
+1)Create Register form 
+2) save data of the user into auth_user table.
+
+
+Session 
+session is a piece of information that can be accessed anywhere
+in the application.
+session are stored on server side.
+Session are store either in file or in database.
+In django sessions are stored in django_session which contains
+two columns session_key and session_data
+
+sessions are set with key and value with the help of request object.
+syntax:
+
+ request.session['name']='Itvedant'
+
+
+login() and logout() 
+====================
+login function is used to store id of the 
+authenticated user in the session. SO that 
+that id can be retrived anywhere in the 
+application as required.
+
+logout 
+=====
+This function is used to destroy session.
+That is data stored by login function in the
+session is deleted by logout function.
+
+To fetch id of the logged in user 
+syntax: request.user.id 
+
+
+Menu Hiding based on User Logged in 
+==================================
+When user is logged in, login() function is executed
+and it add logged in user id in session.
+That means that user is authenticated.
+
+In django there is datamember is_authenticated of user object
+is set to True if user is authenticated.
+
+if there is need to check authenticaion of logged in user 
+then user user.is_authenticated 
+
+If user is logged in then user.is_authenticated is True.
+If user is not logged then user.is_authenticated is False.
+
+if there is need to check authentication of logged In
+user in .py file, user request.user.is_authenticated.
+
+cart table or model 
+==================
+id   uid   pid
+
+uid can be fetched from session.
+when user click add to cart 
+1) whether user is logged in or not.
+   if user is not logged in, then redirect user to 
+   login page.
+2) If user is logged in, i.e id of the user is stored in
+   the session,then by using request.user.id fetch 
+   id of the logged in user.
+
+3) Product id can be bind to the addto cart button that 
+  is received in product details page.
+
+
+
+
+Cart Management
+===============
+1) Add product to cart 
+
+step1: define model class Cart in models.py 
+
+model: auth_user 
+id  password  username  first_name .....
+
+
+model:Product 
+id  name  ......
+
+model:cart 
+
+id  uid  pid  qty 
+
+
+cart is child table who is taking references of 
+auth_user and ecommapp_products tables. 
+
+auth_user        modelname:User 
+ecommapp_product modelname:Product
+
+
+order model 
+===========
+id  order_id  pid  uid qty
+
+
+step1: Generate order id 
+step2: Check whether order_id exist or not.
+       if order id exist repeat step1.
+step3:fetch all product from cart for logged in user.
+step4:Insert all product into order table with order id.
+step5: delete all products from the cart.
+
+

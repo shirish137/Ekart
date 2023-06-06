@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+</head>
+<body>
+        <h2>Products</h2>
+  
+    {% comment %}
+        <p>{{name}}</p>
+
+
+        {% if x > y %}
+             <p>In if block</p>
+             <h4>{{x}} is greater</h4>
+        {% else %}
+             <p>In else block</p>
+             <h4>{{y}} is greater</h4>
+        {% endif %}
+
+        <hr>
+        {{data}}
+        <br>
+        {% for x in data %}
+           <p>{{x}}</p>
+
+        {% endfor %}
+
+    {% endcomment %}
+
+    <table border="1">
+
+            <tr>
+                   {% for x in plist %}
+
+                       <td>
+                        
+                            {{x.name}} <br>
+                            {{x.pimage}}  <br>
+                            {{x.desc}}   <br>
+                            {{x.price}}
+                            
+                       </td>
+
+                   {% endfor %}
+            </tr>
+    </table>
+</body>
+</html>

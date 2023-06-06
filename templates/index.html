@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'main' %}
+
+   <div class="row">
+       <div class="col-md-3 mt-3 ">
+            
+            <h3 class="bg-secondary text-white p-2">Sort By Price</h3> 
+            
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="/sort/0"><h5>Low to High</h5></a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="/sort/1"><h5>High to Low</h5></a>
+              </li>
+              
+            </ul><!--- Sort end-->
+          
+            <h3 class="bg-secondary text-white p-2">Filters</h3>
+            <h4>By Category</h4>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                   <a class="nav-link" href="/catfilter/1"><h5>Mobile</h5></a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/catfilter/2"><h5>Cloths</h5></a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/catfilter/3"><h5>Shoes</h5></a>
+                </li>
+              
+            </ul><!-- Cat filter end-->
+
+            <h4>By Price</h4>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                   <a class="nav-link" href="/pricefilter/0"><h5>< Rs.5000 </h5></a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/pricefilter/1"><h5> >= Rs.5000</h5></a>
+                </li>
+            </ul><!-- Price filter end-->
+
+            <h4>By Price range</h4>
+            <form action="/pricerange">
+              <div class="mb-3">
+                <label for="one" class="form-label">Min</label>
+                <input type="number" class="form-control" name="min" id="one" placeholder="Min value">
+              </div>
+
+              <div class="mb-3">
+                <label for="two" class="form-label">Max</label>
+                <input type="number" class="form-control" name="max" id="two" placeholder="Max value">
+              </div>
+
+              <div class="mb-3">
+                   <button type="submit" class="btn btn-success">Apply</button>
+              </div>
+            </form>
+
+
+
+
+       </div><!-- Side bar end-->
+  
+  <div class="col-md-9">
+    <div class="row mt-3">
+      {% for x in products %}
+        <div class="col-md-3 mb-4">
+           <div class="card" style="width:100%;">
+               <img src="{{x.pimage.url}}"  class="card-image-top" height="200px" alt="...">
+               <div class="card-body">
+                 <h5 class="card-title">{{x.name}}</h5>
+                 
+                 {% if x.cat == 1 %}
+                   <p class="card-text">Mobile</p>
+                 {% elif x.cat == 2 %}
+                    <p class="card-text">Cloths</p>
+                 {% elif x.cat == 3 %}
+                    <p class="card-text">Shoes</p>
+                 {% endif %}
+    
+                 <h6>Rs.{{x.price}}</h6>
+                 <a href="/pdetails/{{x.id}}" class="btn btn-primary">See Details</a>
+               </div>
+           </div><!---Card ends-->
+        </div><!---col ends -->
+        {% endfor %}
+    </div><!--row end-->
+  
+  </div><!--- Product List end-->
+
+</div>
+
+
+{% endblock 'main' %}

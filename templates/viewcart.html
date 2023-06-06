@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block 'main' %}
+<div class="container mt-5">
+      <div class="row">
+            <div class="col-md-9">
+                <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+                    <h3>Customer Information</h3>
+                    <hr>
+ 
+                    {% for x in products|slice:"1" %}
+                          <b>Name:</b>{{x.uid.first_name}}&nbsp;&nbsp;&nbsp;{{x.uid.last_name}} <br>
+                          <b>Email Id:</b>{{x.uid.email}}
+                    {% endfor %}
+
+                </div> 
+                
+            {% for x in products %}
+              <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+                    <div class="row">
+                          <div class="col-md-4">
+                              <img src="{{x.pid.pimage.url}}" class="" width="100%" height="200px" alt="" > 
+                          </div>
+
+                          <div class="col-md-8">
+                            <p><strong>Product Name:</strong>&nbsp;&nbsp;{{x.pid.name}}</p>
+                            {% if x.pid.cat == 1 %}
+                            <p><strong>Category:</strong>&nbsp;&nbsp;Mobile</p>
+                            {% elif x.pid.cat == 2 %}
+                            <p><strong>Category:</strong>&nbsp;&nbsp;Cloths</p>
+                            {% else %}
+                            <p><strong>Category:</strong>&nbsp;&nbsp;Shoes</p>
+                            {% endif %}
+                            <p><strong>Price per Unit:</strong>&nbsp;&nbsp;{{x.pid.price}}</p>
+                            <p>
+                                  <strong>Qty:</strong>&nbsp;&nbsp;
+                                  <a href="/changeqty/{{x.pid.id}}/0"><button class="btn btn-danger">-</button></a>
+                                  <input type="text"  id="" style="width:50px;border-radius:20px;text-align:center;" value="{{x.qty}}">
+                                  <a href="/changeqty/{{x.pid.id}}/1"><button class="btn btn-success">+</button></a>
+                            </p>
+                          </div>
+
+                    </div>
+
+                   
+
+              </div>
+
+            {% endfor %}
+
+            </div>
+
+            <div class="col-md-3">
+                <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+                    <h3>Price Details</h3>
+                    <hr>
+                    <h5>Items({{nitems}}):&nbsp;&nbsp;Rs:{{total}}</h5>
+                    <hr>
+                    <a href="/placeorder"><button class="btn btn-warning">PlaceOrder</button></a>
+                    
+                </div>
+                   
+            </div>
+      </div>
+</div>
+{% endblock 'main' %}

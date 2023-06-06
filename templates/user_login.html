@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block 'main' %}
+
+<div class="container">
+      <div class="row">
+           <div class="col-md-6 mx-auto">
+            <h4 class="mt-5">Login</h4>
+               <form method="POST" action="">'
+                {% csrf_token %}
+                        <table>
+                            {{loginform}}
+                              <tr>
+                                   <td><input type="submit" value="Login" class="btn btn-danger"></td>
+                              </tr>
+                        </table>
+
+               </form>
+
+           </div>
+      </div>
+</div>
+
+{% endblock %}
